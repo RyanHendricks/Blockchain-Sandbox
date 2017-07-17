@@ -1,3 +1,4 @@
 truffle/node_modules
 \.DS_Store
 ethereum-docker/cargochain
+ethereum-docker/
