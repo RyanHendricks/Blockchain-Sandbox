@@ -1,0 +1,158 @@
+================================
+			GETH
+================================
+> personal.newAccount("Bollore2017")
+"0xe6aaf15ba890072a3073fc83f8972f53b3435bb7"
+
+personal.listAccounts
+personal.unlockAccount("0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f","",500000)
+
+> miner.setEtherbase(eth.accounts[0])
+true
+> personal.unlockAccount(eth.coinbase)
+Unlock account 0xe6aaf15ba890072a3073fc83f8972f53b3435bb7
+Passphrase:
+true
+> eth.getBalance(eth.coinbase).toNumber();
+0
+> miner.start(2)
+true
+
+
+=======================================
+Developpemnt truffle  Document notarisé
+=======================================
+
+Source : https://medium.com/zeppelin-blog/the-hitchhikers-guide-to-smart-contracts-in-ethereum-848f08001f05
+https://medium.com/@ConsenSys/a-101-noob-intro-to-programming-smart-contracts-on-ethereum-695d15c1dab4
+https://souptacular.gitbooks.io/ethereum-tutorials-and-tips-by-hudson/content/giant_ethereum_resource_list.html
+
+docker-compose run truffle bash
+cd /root/ProofOfExistence1/
+truffle init
+- Supprimer fichiers inutilement crée
+- Modifier truffle.js : host: "testrpc"
+- Modifier migration/2_deploy_contracts.js avec : ProofOfExistence1
+truffle create contract ProofOfExistence1
+- Développer le contrat
+truffle compile
+truffle migrate --reset
+truffle console
+
+var poe
+ProofOfExistence1.deployed().then(function(instance){poe=instance})
+console.log(poe.address)
+poe.notarize('Coucou je suis un document notarise dans la blockchain')
+poe.calculateProof('Coucou je suis un document notarise dans la blockchain').then(console.log)
+poe.proof().then(console.log)
+
+
+
+// deploy contracts
+truffle migrate --reset
+truffle console
+
+// Get the new version of the contract
+truffle(default)> ProofOfExistence2.deployed().then(function(instance){poe=instance})
+// and print its address 
+truffle(default)> console.log(poe.address)
+
+// let's check for some new document, and it shouldn't be there.
+truffle(default)> poe.checkDocument('hello').then(console.log)
+false
+
+// let's now add that document to the proof store
+truffle(default)> poe.notarize('hello')
+
+// let's now check again if the document has been notarized!
+truffle(default)> poe.checkDocument('hello').then(console.log)
+true
+
+// success!
+// we can also store other documents and they are recorded too
+truffle(default)> poe.notarize('some other document');
+truffle(default)> poe.checkDocument('some other document').then(console.log)
+
+true
+
+
+=======================================
+Developpemnt truffle Voting app
+=======================================
+
+docker-compose build ethereum_voting_dapp
+docker-compose run ethereum_voting_dapp npm install
+docker-compose run ethereum_voting_dapp truffle compile
+docker-compose run ethereum_voting_dapp truffle migrate
+docker-compose run ethereum_voting_dapp truffle migrate --network testnet
+docker-compose run ethereum_voting_dapp truffle console
+docker-compose run --service-ports ethereum_voting_dapp npm run dev
+
+
+PROD : 
+docker-compose -f docker-compose-voting-deploy.yml run ethereum_voting_dapp npm install
+docker-compose -f docker-compose-voting-deploy.yml run --service-ports ethereum_voting_dapp npm run dev
+
+=======================================
+New projet with truffle
+=======================================
+docker-compose run truffle truffle init
+-> Modifier app/truffle.js : host: "testrpc"
+docker-compose run truffle truffle compile
+docker-compose run truffle truffle migrate
+docker-compose run truffle truffle test
+docker-compose run truffle truffle console
+var metacoin
+MetaCoin.deployed().then(function(instance){metacoin =instance})
+console.log(metacoin.address)
+
+
+=======================================
+truffle init angular
+=======================================
+docker-compose run truffle-init-angular npm install
+docker-compose run truffle-init-angular truffle compile
+docker-compose run truffle-init-angular truffle migrate
+docker-compose run truffle-init-angular truffle test
+docker-compose run truffle-init-angular truffle console
+docker-compose run --service-ports truffle-init-angular truffle build
+
+
+=======================================
+truffle init truffle-webpack-demo
+=======================================
+docker-compose run truffle-webpack-demo truffle compile
+docker-compose run truffle-webpack-demo truffle migrate
+docker-compose run truffle-webpack-demo truffle test
+docker-compose run truffle-webpack-demo truffle console
+docker-compose run --service-ports truffle-webpack-demo truffle build
+
+
+=======================================
+truffle ethereum-metacoin-client
+=======================================
+docker-compose build ethereum-metacoin-client
+docker-compose run ethereum-metacoin-client npm install
+docker-compose run ethereum-metacoin-client truffle compile
+docker-compose run ethereum-metacoin-client truffle migrate
+docker-compose run ethereum-metacoin-client truffle test
+docker-compose run ethereum-metacoin-client truffle console
+docker-compose run --service-ports ethereum-metacoin-client npm run dev
+
+
+=======================================
+truffle deploiement testnet
+=======================================
+docker run -d --name ethereum-node -v /home/ubuntu/ethereum-node:/root -p 8545:8545 -p 30303:30303 ethereum/client-go --testnet --fast --cache=512 --rpc --rpcapi --rpccorsdomain="*"
+docker exec -it 7b26a089f62a geth attach ipc://root/.ethereum/testnet/geth.ipc --datadir "/root/.ethereum/testnet/"
+
+// Activation webjs RPC
+admin.startRPC("0.0.0.0", 8545, "*", "web3,net,eth")
+// Création account. La clé chiffré sera créee dans le .ethereum/testnet/keystore
+personal.newAccount("passphrase")
+// Vérification
+eth.accounts
+
+
+Voting contract Testnet ropsten networ : 0x5ec4e9d787e12a7f839ee4a6cfeccbfc63f3f833
+Account Testnet : 0x2162D598a2ED142009785E2ECbcb69638D3B7ca5
