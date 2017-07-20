@@ -57,7 +57,7 @@ By default this will create:
 To access the Netstats Web UI:
 
 ```
-open http://$(docker-machine ip default):3000
+open http://$(docker-machine 0.0.0.0):3000
 ```
 
 #### Scaling the number of nodes/containers in the cluster

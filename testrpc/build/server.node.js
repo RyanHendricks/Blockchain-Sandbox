@@ -42926,31 +42926,32 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 /***/ (function(module, exports) {
 
 module.exports = {
-	"_from": "elliptic@^6.0.0",
+	"_args": [
+		[
+			"elliptic@6.4.0",
+			"/Users/ryanhendricks/Documents/Blockchain-Sandbox/testrpc"
+		]
+	],
+	"_from": "elliptic@6.4.0",
 	"_id": "elliptic@6.4.0",
 	"_inBundle": false,
 	"_integrity": "sha1-ysmvh2LIWDYYcAPI3+GT5eLq5d8=",
 	"_location": "/elliptic",
 	"_phantomChildren": {},
 	"_requested": {
-		"type": "range",
+		"type": "version",
 		"registry": true,
-		"raw": "elliptic@^6.0.0",
+		"raw": "elliptic@6.4.0",
 		"name": "elliptic",
 		"escapedName": "elliptic",
-		"rawSpec": "^6.0.0",
+		"rawSpec": "6.4.0",
 		"saveSpec": null,
-		"fetchSpec": "^6.0.0"
+		"fetchSpec": "6.4.0"
 	},
-	"_requiredBy": [
-		"/browserify-sign",
-		"/create-ecdh",
-		"/secp256k1"
-	],
+	"_requiredBy": [],
 	"_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.0.tgz",
-	"_shasum": "cac9af8762c85836187003c8dfe193e5e2eae5df",
-	"_spec": "elliptic@^6.0.0",
-	"_where": "/Users/ryanhendricks/Documents/testrpc/node_modules/browserify-sign",
+	"_spec": "6.4.0",
+	"_where": "/Users/ryanhendricks/Documents/Blockchain-Sandbox/testrpc",
 	"author": {
 		"name": "Fedor Indutny",
 		"email": "fedor@indutny.com"
@@ -42958,7 +42959,6 @@ module.exports = {
 	"bugs": {
 		"url": "https://github.com/indutny/elliptic/issues"
 	},
-	"bundleDependencies": false,
 	"dependencies": {
 		"bn.js": "^4.4.0",
 		"brorand": "^1.0.1",
@@ -42968,7 +42968,6 @@ module.exports = {
 		"minimalistic-assert": "^1.0.0",
 		"minimalistic-crypto-utils": "^1.0.0"
 	},
-	"deprecated": false,
 	"description": "EC cryptography",
 	"devDependencies": {
 		"brfs": "^1.4.3",
@@ -51791,30 +51790,33 @@ module.exports = getLevelDOWN
 /***/ (function(module, exports) {
 
 module.exports = {
-	"_from": "levelup@^1.1.0",
+	"_args": [
+		[
+			"levelup@1.3.8",
+			"/Users/ryanhendricks/Documents/Blockchain-Sandbox/testrpc"
+		]
+	],
+	"_development": true,
+	"_from": "levelup@1.3.8",
 	"_id": "levelup@1.3.8",
 	"_inBundle": false,
 	"_integrity": "sha1-+0QsSI776hBD9+uZKaeSp0+9HaY=",
 	"_location": "/levelup",
 	"_phantomChildren": {},
 	"_requested": {
-		"type": "range",
+		"type": "version",
 		"registry": true,
-		"raw": "levelup@^1.1.0",
+		"raw": "levelup@1.3.8",
 		"name": "levelup",
 		"escapedName": "levelup",
-		"rawSpec": "^1.1.0",
+		"rawSpec": "1.3.8",
 		"saveSpec": null,
-		"fetchSpec": "^1.1.0"
+		"fetchSpec": "1.3.8"
 	},
-	"_requiredBy": [
-		"/ganache-core",
-		"/merkle-patricia-tree"
-	],
+	"_requiredBy": [],
 	"_resolved": "https://registry.npmjs.org/levelup/-/levelup-1.3.8.tgz",
-	"_shasum": "fb442c488efbea1043f7eb9929a792a74fbd1da6",
-	"_spec": "levelup@^1.1.0",
-	"_where": "/Users/ryanhendricks/Documents/testrpc/node_modules/ganache-core",
+	"_spec": "1.3.8",
+	"_where": "/Users/ryanhendricks/Documents/Blockchain-Sandbox/testrpc",
 	"browser": {
 		"./lib/leveldown.js": false,
 		"leveldown": false,
@@ -51824,7 +51826,6 @@ module.exports = {
 	"bugs": {
 		"url": "https://github.com/level/levelup/issues"
 	},
-	"bundleDependencies": false,
 	"contributors": [
 		{
 			"name": "Rod Vagg",
@@ -51906,7 +51907,6 @@ module.exports = {
 		"semver": "~5.1.0",
 		"xtend": "~4.0.0"
 	},
-	"deprecated": false,
 	"description": "Fast & simple storage - a Node.js-style LevelDB wrapper",
 	"devDependencies": {
 		"after": "^0.8.2",
@@ -87969,34 +87969,33 @@ var sublevel = module.exports = function (nut, prefix, createStream, options) {
 /***/ (function(module, exports) {
 
 module.exports = {
-	"_from": "level-sublevel@^6.6.1",
+	"_args": [
+		[
+			"level-sublevel@6.6.1",
+			"/Users/ryanhendricks/Documents/Blockchain-Sandbox/testrpc"
+		]
+	],
+	"_development": true,
+	"_from": "level-sublevel@6.6.1",
 	"_id": "level-sublevel@6.6.1",
 	"_inBundle": false,
 	"_integrity": "sha1-+ad/dSGrcKj46S7VbyGjx4hqRIU=",
 	"_location": "/level-sublevel",
-	"_phantomChildren": {
-		"core-util-is": "1.0.2",
-		"errno": "0.1.4",
-		"inherits": "2.0.3",
-		"prr": "0.0.0"
-	},
+	"_phantomChildren": {},
 	"_requested": {
-		"type": "range",
+		"type": "version",
 		"registry": true,
-		"raw": "level-sublevel@^6.6.1",
+		"raw": "level-sublevel@6.6.1",
 		"name": "level-sublevel",
 		"escapedName": "level-sublevel",
-		"rawSpec": "^6.6.1",
+		"rawSpec": "6.6.1",
 		"saveSpec": null,
-		"fetchSpec": "^6.6.1"
+		"fetchSpec": "6.6.1"
 	},
-	"_requiredBy": [
-		"/ganache-core"
-	],
+	"_requiredBy": [],
 	"_resolved": "https://registry.npmjs.org/level-sublevel/-/level-sublevel-6.6.1.tgz",
-	"_shasum": "f9a77f7521ab70a8f8e92ed56f21a3c7886a4485",
-	"_spec": "level-sublevel@^6.6.1",
-	"_where": "/Users/ryanhendricks/Documents/testrpc/node_modules/ganache-core",
+	"_spec": "6.6.1",
+	"_where": "/Users/ryanhendricks/Documents/Blockchain-Sandbox/testrpc",
 	"author": {
 		"name": "Dominic Tarr",
 		"email": "dominic.tarr@gmail.com",
@@ -88005,7 +88004,6 @@ module.exports = {
 	"bugs": {
 		"url": "https://github.com/dominictarr/level-sublevel/issues"
 	},
-	"bundleDependencies": false,
 	"dependencies": {
 		"bytewise": "~1.1.0",
 		"levelup": "~0.19.0",
@@ -88015,7 +88013,6 @@ module.exports = {
 		"typewiselite": "~1.0.0",
 		"xtend": "~4.0.0"
 	},
-	"deprecated": false,
 	"description": "partition levelup databases",
 	"devDependencies": {
 		"level": "^1.4.0",
@@ -88457,29 +88454,33 @@ module.exports = {
 /***/ (function(module, exports) {
 
 module.exports = {
-	"_from": "levelup@~0.19.0",
+	"_args": [
+		[
+			"levelup@0.19.1",
+			"/Users/ryanhendricks/Documents/Blockchain-Sandbox/testrpc"
+		]
+	],
+	"_development": true,
+	"_from": "levelup@0.19.1",
 	"_id": "levelup@0.19.1",
 	"_inBundle": false,
 	"_integrity": "sha1-86anIFJyxLXzXkEv8ASgOgrt9Qs=",
 	"_location": "/level-sublevel/levelup",
 	"_phantomChildren": {},
 	"_requested": {
-		"type": "range",
+		"type": "version",
 		"registry": true,
-		"raw": "levelup@~0.19.0",
+		"raw": "levelup@0.19.1",
 		"name": "levelup",
 		"escapedName": "levelup",
-		"rawSpec": "~0.19.0",
+		"rawSpec": "0.19.1",
 		"saveSpec": null,
-		"fetchSpec": "~0.19.0"
+		"fetchSpec": "0.19.1"
 	},
-	"_requiredBy": [
-		"/level-sublevel"
-	],
+	"_requiredBy": [],
 	"_resolved": "https://registry.npmjs.org/levelup/-/levelup-0.19.1.tgz",
-	"_shasum": "f3a6a7205272c4b5f35e412ff004a03a0aedf50b",
-	"_spec": "levelup@~0.19.0",
-	"_where": "/Users/ryanhendricks/Documents/testrpc/node_modules/level-sublevel",
+	"_spec": "0.19.1",
+	"_where": "/Users/ryanhendricks/Documents/Blockchain-Sandbox/testrpc",
 	"browser": {
 		"leveldown": false,
 		"leveldown/package": false,
@@ -88488,7 +88489,6 @@ module.exports = {
 	"bugs": {
 		"url": "https://github.com/rvagg/node-levelup/issues"
 	},
-	"bundleDependencies": false,
 	"contributors": [
 		{
 			"name": "Rod Vagg",
@@ -88565,7 +88565,6 @@ module.exports = {
 		"semver": "~5.1.0",
 		"xtend": "~3.0.0"
 	},
-	"deprecated": false,
 	"description": "Fast & simple storage - a Node.js-style LevelDB wrapper",
 	"devDependencies": {
 		"async": "*",
@@ -109733,48 +109732,19 @@ module.exports = {
 /***/ (function(module, exports) {
 
 module.exports = {
+	"_args": [
+		[
+			"ganache-core@1.0.1",
+			"/Users/ryanhendricks/Documents/Blockchain-Sandbox/testrpc"
+		]
+	],
+	"_development": true,
 	"_from": "ganache-core@1.0.1",
 	"_id": "ganache-core@1.0.1",
 	"_inBundle": false,
 	"_integrity": "sha1-/MC+q3lFty4DQ+1YE2p0h0NEX/M=",
 	"_location": "/ganache-core",
-	"_phantomChildren": {
-		"acorn": "5.1.1",
-		"acorn-dynamic-import": "2.0.2",
-		"big.js": "3.1.3",
-		"co": "4.6.0",
-		"decamelize": "1.2.0",
-		"emojis-list": "2.1.0",
-		"enhanced-resolve": "3.3.0",
-		"get-caller-file": "1.0.2",
-		"interpret": "1.0.3",
-		"json-loader": "0.5.4",
-		"json-stable-stringify": "1.0.1",
-		"json5": "0.5.1",
-		"loader-runner": "2.3.0",
-		"lodash": "4.17.4",
-		"memory-fs": "0.4.1",
-		"mkdirp": "0.5.1",
-		"node-libs-browser": "2.0.0",
-		"object-assign": "4.1.1",
-		"os-locale": "1.4.0",
-		"read-pkg-up": "1.0.1",
-		"require-directory": "2.1.1",
-		"require-main-filename": "1.0.1",
-		"set-blocking": "2.0.0",
-		"source-map": "0.5.6",
-		"string-width": "1.0.2",
-		"strip-ansi": "3.0.1",
-		"supports-color": "3.2.3",
-		"tapable": "0.2.6",
-		"uglify-js": "2.8.29",
-		"watchpack": "1.3.1",
-		"webpack-sources": "1.0.1",
-		"which-module": "1.0.0",
-		"wrap-ansi": "2.1.0",
-		"y18n": "3.2.1",
-		"yargs-parser": "4.2.1"
-	},
+	"_phantomChildren": {},
 	"_requested": {
 		"type": "version",
 		"registry": true,
@@ -109789,13 +109759,11 @@ module.exports = {
 		"#DEV:/"
 	],
 	"_resolved": "https://registry.npmjs.org/ganache-core/-/ganache-core-1.0.1.tgz",
-	"_shasum": "fcc0beab7945b72e0343ed58136a748743445ff3",
-	"_spec": "ganache-core@1.0.1",
-	"_where": "/Users/ryanhendricks/Documents/testrpc",
+	"_spec": "1.0.1",
+	"_where": "/Users/ryanhendricks/Documents/Blockchain-Sandbox/testrpc",
 	"bugs": {
 		"url": "https://github.com/trufflesuite/ganache-core/issues"
 	},
-	"bundleDependencies": false,
 	"dependencies": {
 		"async": "~1.5.0",
 		"bip39": "~2.2.0",
@@ -109827,7 +109795,6 @@ module.exports = {
 		"webpack": "^2.2.1",
 		"yargs": "^7.0.2"
 	},
-	"deprecated": false,
 	"description": "[![npm](https://img.shields.io/npm/v/ethereumjs-testrpc.svg)]() [![npm](https://img.shields.io/npm/dm/ethereumjs-testrpc.svg)]() [![Build Status](https://travis-ci.org/ethereumjs/testrpc.svg?branch=master)](https://travis-ci.org/ethereumjs/testrpc)",
 	"directories": {
 		"lib": "./lib"
