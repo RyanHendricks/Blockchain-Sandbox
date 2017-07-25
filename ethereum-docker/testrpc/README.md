@@ -10,14 +10,7 @@
 
 # INSTALL
 
-`testrpc` is written in Javascript and distributed as a Node package via `npm`. Make sure you have Node.js (>= v6.9.1) installed, and your environment is capable of installing and compiling `npm` modules.
-
-**macOS** Make sure you have the XCode Command Line Tools installed. These are needed in general to be able to compile most C based languages on your machine, as well as many npm modules.
-
-**Windows** See our [Windows install instructions](https://github.com/ethereumjs/testrpc/wiki/Installing-TestRPC-on-Windows).
-
-**Ubuntu/Linux** Follow the basic instructions for installing [Node.js](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions) and make sure that you have `npm` installed, as well as the `build-essential` `apt` package (it supplies `make` which you will need to compile most things). Use the official Node.js packages, *do not use the package supplied by your distribution.*
-
+`testrpc` is written in Javascript and distributed as a Node package via `npm`. Make sure you have Node.js (>= v6.9.1) installed.
 
 ```Bash
 npm install -g ethereumjs-testrpc
@@ -118,7 +111,6 @@ The RPC methods currently implemented are:
 * `eth_blockNumber`
 * `eth_call`
 * `eth_coinbase`
-* `eth_compileSolidity`
 * `eth_estimateGas`
 * `eth_gasPrice`
 * `eth_getBalance`
@@ -146,6 +138,7 @@ The RPC methods currently implemented are:
 * `eth_sign`
 * `eth_syncing`
 * `eth_uninstallFilter`
+* `debug_traceTransaction`
 * `net_listening`
 * `net_peerCount`
 * `net_version`
@@ -162,9 +155,13 @@ There’s also special non-standard methods that aren’t included within the or
 * `evm_increaseTime` : Jump forward in time. Takes one parameter, which is the amount of time to increase in seconds. Returns the total time adjustment, in seconds.
 * `evm_mine` : Force a block to be mined. Takes no parameters. Mines a block independent of whether or not mining is started or stopped.
 
+# Unsupported Methods
+
+* `eth_compileSolidity`: If you'd like Solidity compilation in Javascript, please see the [solc-js project](https://github.com/ethereum/solc-js).
+
 # Docker
 
-The Simplest way to get stared with the Docker image:
+The Simplest way to get started with the Docker image:
 
 ```Bash
 docker run -d -p 8545:8545 ethereumjs/testrpc:latest
@@ -174,7 +171,7 @@ To pass options to testrpc through Docker simply add the arguments to
 the run command:
 
 ```Bash
-docker run -d -p 8545:8545 ethereumjs/testrpc:latest -a 10 --debug
+docker run -d -p 8545:8545 ethereumjs/testrpc:lst -a 10 --debugate
 ```
 
 To build the Docker container from source:
@@ -184,6 +181,9 @@ git clone https://github.com/ethereumjs/testrpc.git && cd testrpc
 docker build -t ethereumjs/testrpc .
 ```
 
+# DEVELOPING
+
+This is a distribution package where the core code is bundled to support browsers and reduce installation issues on all platforms. You can contribute to the core code via [ganache-core](https://github.com/trufflesuite/ganache-core).
 
 # TESTING
 
