@@ -1,1 +1,4 @@
 truffle/node_modules
+testrpc/node_modules
+hyperledger/blockchain-explorer/explorer_1/node_modules
+\.DS_Store
