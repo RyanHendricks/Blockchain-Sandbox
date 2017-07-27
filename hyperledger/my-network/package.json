@@ -1,23 +1,22 @@
 {
   "engines": {
-    "composer": "^0.9.0"
+    "composer": "^0.10.0"
   },
-  
   "name": "my-network",
   "version": "0.0.1",
   "description": "My very first Hyperledger Composer Network",
   "scripts": {
-      "prepublish": "mkdirp ~/dist && composer archive create --sourceType dir --sourceName . -a ./dist/my-network.bna",
-      "pretest": "npm run lint",
-      "lint": "eslint .",
-      "postlint": "npm run licchk",
-      "licchk": "license-check",
-      "postlicchk": "npm run doc",
-      "doc": "jsdoc --pedantic --recurse -c jsdoc.conf",
-      "test-inner": "mocha --recursive && cucumber-js",
-      "test-cover": "nyc npm run test-inner",
-      "test": "mocha --recursive -t 4000"
-     },
+    "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/my-network.bna",
+    "pretest": "npm run lint",
+    "lint": "eslint .",
+    "postlint": "npm run licchk",
+    "licchk": "license-check",
+    "postlicchk": "npm run doc",
+    "doc": "jsdoc --pedantic --recurse -c jsdoc.conf",
+    "test-inner": "mocha --recursive && cucumber-js",
+    "test-cover": "nyc npm run test-inner",
+    "test": "mocha --recursive -t 4000"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/hyperledger/composer-sample-networks.git"
