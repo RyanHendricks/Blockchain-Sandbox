@@ -1,0 +1,24 @@
+2017-07-24T19:40:01.632Z INFO    ModelManager             :info()                    
+    namespace org.hyperledger.composer.system
+
+    abstract asset Asset {  }
+
+    abstract participant Participant {   }
+
+    abstract transaction Transaction identified by transactionId{
+      o String transactionId
+      o DateTime timestamp
+    }
+
+    abstract event Event identified by eventId{
+      o String eventId
+      o DateTime timestamp
+    }
+ {}$
+2017-07-24T19:40:01.679Z INFO    ModelManager             :addModelFile()            addModelFile {"0":"/**\n * Sample business network definition.\n */\nnamespace org.acme.sample\n\nasset SampleAsset identified by assetId {\n  o String assetId\n  --> SampleParticipant owner\n  o String value\n}\n\nparticipant SampleParticipant identified by participantId {\n  o String participantId\n  o String firstName\n  o String lastName\n}\n\ntransaction SampleTransaction {\n  --> SampleAsset asset\n  o String newValue\n}\n\nevent SampleEvent {\n  --> SampleAsset asset\n  o String oldValue\n  o String newValue\n}\n"}$
+2017-07-24T19:40:10.704Z INFO    ModelManager             :addModelFile()            addModelFile {"0":"/**\n * My commodity trading network\n */\nnamespace org.acme.mynetwork\nasset Commodity identified by tradingSymbol {\n    o String tradingSymbol\n    o String description\n    o String mainExchange\n    o Double quantity\n    --> Trader owner\n}\nparticipant Trader identified by tradeId {\n    o String tradeId\n    o String firstName\n    o String lastName\n}\ntransaction Trade {\n    --> Commodity commodity\n    --> Trader newOwner\n}"}$
+2017-07-24T19:40:11.606Z INFO    ModelManager             :addModelFile()            addModelFile {"0":"/**\n * My commodity trading network\n */\nnamespace org.acme.mynetwork\nasset Commodity identified by tradingSymbol {\n    o String tradingSymbol\n    o String description\n    o String mainExchange\n    o Double quantity\n    --> Trader owner\n}\nparticipant Trader identified by tradeId {\n    o String tradeId\n    o String firstName\n    o String lastName\n}\ntransaction Trade {\n    --> Commodity commodity\n    --> Trader newOwner\n}"}$
+2017-07-24T19:46:13.005Z INFO    ModelManager             :addModelFile()            addModelFile {"0":"/**\n * My commodity trading network\n */\nnamespace org.acme.mynetwork\nasset Commodity identified by tradingSymbol {\n    o String tradingSymbol\n    o String description\n    o String mainExchange\n    o Double quantity\n    --> Trader owner\n}\nparticipant Trader identified by tradeId {\n    o String tradeId\n    o String firstName\n    o String lastName\n}\ntransaction Trade {\n    --> Commodity commodity\n    --> Trader newOwner\n}"}$
+2017-07-24T19:46:13.010Z INFO    ModelManager             :addModelFile()            addModelFile {"0":"/**\n * My commodity trading network\n */\nnamespace org.acme.mynetwork\nasset Commodity identified by tradingSymbol {\n    o String tradingSymbol\n    o String description\n    o String mainExchange\n    o Double quantity\n    --> Trader owner\n}\nparticipant Trader identified by tradeId {\n    o String tradeId\n    o String firstName\n    o String lastName\n}\ntransaction Trade {\n    --> Commodity commodity\n    --> Trader newOwner\n}"}$
+2017-07-24T19:46:45.952Z INFO    ModelManager             :addModelFile()            addModelFile {"0":"/**\n * My commodity trading network\n */\nnamespace org.acme.mynetwork\nasset Commodity identified by tradingSymbol {\n    o String tradingSymbol\n    o String description\n    o String mainExchange\n    o Double quantity\n    --> Trader owner\n}\nparticipant Trader identified by tradeId {\n    o String tradeId\n    o String firstName\n    o String lastName\n}\ntransaction Trade {\n    --> Commodity commodity\n    --> Trader newOwner\n}"}$
+2017-07-24T19:46:45.959Z INFO    ModelManager             :addModelFile()            addModelFile {"0":"/**\n * My commodity trading network\n */\nnamespace org.acme.mynetwork\nasset Commodity identified by tradingSymbol {\n    o String tradingSymbol\n    o String description\n    o String mainExchange\n    o Double quantity\n    --> Trader owner\n}\nparticipant Trader identified by tradeId {\n    o String tradeId\n    o String firstName\n    o String lastName\n}\ntransaction Trade {\n    --> Commodity commodity\n    --> Trader newOwner\n}"}$
