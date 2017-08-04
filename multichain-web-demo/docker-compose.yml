@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  web-demo-api:
+    image: stutzlab/multichain-web-demo-api:1.1.0
+    build: .
+    container_name: multichain-web-demo-api
+    ports:
+      - 9191:80
+    volumes:
+      - ./src:/app
+    environment:
+      - CHAIN_NAME=dockerchain
+      - DISPLAY_NAME=Precogs Multichain
+      - RPC_HOST=127.0.0.1
+      - RPC_PORT=8000
+      - RPC_USER=multichainrpc
+      - RPC_PASSWORD=79pgKQusiH3VDVpyzsM6e3kRz6gWNctAwgJvymG3iiuz
