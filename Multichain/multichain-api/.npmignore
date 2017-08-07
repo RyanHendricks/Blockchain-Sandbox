@@ -1,0 +1,9 @@
+.vscode/
+dist/
+src/
+test/
+.editorconfig
+.gitignore
+.npmignore
+.nycrc
+.travis.yml
