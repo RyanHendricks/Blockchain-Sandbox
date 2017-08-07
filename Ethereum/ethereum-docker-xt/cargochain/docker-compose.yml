@@ -1,0 +1,19 @@
+version: '2'
+services:
+  cargochain:
+    image: ulexus/meteor:legacy
+    restart: on-failure
+    container_name: cargochain
+    hostname: cargochain
+    volumes:
+      - ./app:/src/app
+    ports:
+      - "3001:80"
+    environment:
+      - METEOR_ALLOW_SUPERUSER=true
+      - MONGO_URL=mongodb://mongo:27017
+      - ROOT_URL=http://localhost:3001
+  mongo:  
+    image: mongo:3.4
+    ports:
+      - "27017:27017"

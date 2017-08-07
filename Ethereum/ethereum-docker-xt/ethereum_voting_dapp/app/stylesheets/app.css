@@ -1,0 +1,42 @@
+body {
+    padding-top: 50px;
+}
+label {
+  display: inline-block;
+  width: 100px;
+}
+
+input {
+  padding: 5px;
+  font-size: 16px;
+}
+
+select {
+  padding: 5px;
+  font-size: 16px;
+}
+
+
+button {
+  font-size: 16px;
+  padding: 5px;
+}
+
+
+.black {
+  color: black;
+}
+
+#balance {
+  color: black;
+}
+
+.hint {
+  color: #666;
+}
+
+.input-group-addon {
+    color:#ffffff;
+    background-color: #b58900;
+    border-color:#b58900;
+}
