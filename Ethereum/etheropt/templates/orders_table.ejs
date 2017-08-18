@@ -1,0 +1,16 @@
+<table class="table">
+  <tr>
+    <th>Option</th>
+    <th>Size @ price</th>
+    <th>Expires (blocks)</th>
+    <th>Cancel</th>
+  </tr>
+  <% orders.forEach(function(order){ %>
+    <tr>
+      <td><%= order.option.expiration+" "+order.option.fromcur+"/"+order.option.tocur+" "+order.option.strike+" "+order.option.kind %></td>
+      <td><%= utility.weiToEth(Math.sign(order.order.size) * order.remainingSize) %> eth @ <%= order.price.toFixed(4) %></td>
+      <td><%= Math.max(0,order.order.blockExpires-blockNumber) %></td>
+      <td><button style="btn btc-default btn-xs" onclick="bundle.Main.cancelOrder(<%= order.order.orderID %>)">Cancel</buton</td>
+    </tr>
+  <% }); %>
+</table>

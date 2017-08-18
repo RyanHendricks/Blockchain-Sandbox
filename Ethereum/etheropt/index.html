@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/images/favicon.ico">
+    <link href="//getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/golden-layout/1.5.1/css/goldenlayout-base.css" rel="stylesheet" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/golden-layout/1.5.1/css/goldenlayout-light-theme.css" rel="stylesheet" />
+    <link href="//cdn.jsdelivr.net/alertifyjs/1.7.1/css/alertify.min.css" rel="stylesheet" />
+    <link href="//cdn.jsdelivr.net/alertifyjs/1.7.1/css/themes/bootstrap.min.css" rel="stylesheet" />
+    <link href="/stylesheets/base.css" rel="stylesheet" />
+    <title>EtherOpt</title>
+  </head>
+
+  <body>
+
+
+    <div id="header">
+      <div id="family"></div>
+      <img src="/images/title.svg" />
+      <div style="float: right;" class="padding">
+        <div id="addresses"></div>
+      </div>
+    </div>
+
+    <div id="layout-container"></div>
+
+    <div id="loading"><i class="fa fa-circle-o-notch fa-spin fa-3x"></i></div>
+
+    <!-- Address -->
+    <div class="modal fade" id="account_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Add account</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="address_addr">Address</label>
+                <input type="text" class="form-control" id="account_addr" placeholder="Address (0x.....)" />
+              </div>
+              <div id="pk_div">
+                <div class="form-group">
+                  <label for="address_addr">Private key</label>
+                  <input type="text" class="form-control" id="account_pk" placeholder="Private key (0x.....)" />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="account_submit">Add account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fund -->
+    <div class="modal fade" id="fund_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Deposit funds</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <input type="hidden" id="fund_contract_addr" value="">
+              <div class="form-group">
+                <input type="text" class="form-control" id="fund_amount" placeholder="Amount (eth)" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="fund_submit">Deposit funds</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Withdraw -->
+    <div class="modal fade" id="withdraw_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Withdraw funds</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <input type="hidden" id="withdraw_contract_addr" value="">
+              <div class="form-group">
+                <input type="text" class="form-control" id="withdraw_amount" placeholder="Amount (eth)" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="withdraw_submit">Withdraw funds</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buy -->
+    <div class="modal fade" id="buy_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Buy</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <input type="hidden" id="buy_option" value="">
+              <input type="hidden" id="buy_order" value="">
+              <div class="form-group">
+                <label>Option</label>
+                <div id="buy_description"></div>
+              </div>
+              <div class="form-group">
+                <label for="buy_size">Size</label>
+                <input type="text" class="form-control" id="buy_size" placeholder="Size (eth)" onchange="buyMargin();" />
+              </div>
+              <div class="form-group">
+                <label for="buy_price">Price</label>
+                <input type="text" class="form-control" id="buy_price" placeholder="Price" onchange="buyMargin();" />
+              </div>
+              <div class="form-group">
+                <label for="buy_graph">Payoff diagram</label>
+                <div id="buy_graph" style="width: 100%; overflow: hidden;"></div>
+              </div>
+              <div class="form-group">
+                <label for="buy_margin">Funds required</label>
+                <p><div id="buy_margin"></div></p>
+                <p>This is equivalent to the max loss of the trade. If you have trades that offset this trade, the actual funds required may be less.</p>
+              </div>
+              <div class="panel-group" id="accordionAdvancedBuy" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="headingAdvancedBuy">
+                    <h4 class="panel-title">
+                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionAdvancedBuy" href="#collapseAdvancedBuy" aria-expanded="false" aria-controls="collapseAdvancedBuy">
+                        Advanced options <i class="fa fa-caret-down"></i>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseAdvancedBuy" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAdvancedBuy">
+                    <div class="panel-body">
+                      <div class="form-group">
+                        <label for="buy_expires">Good for N blocks</label>
+                        <p>1 block &#8776; 15 seconds</p>
+                        <input type="text" class="form-control" id="buy_expires" placeholder="Blocks" value="10" />
+                      </div>
+                      <div class="form-group">
+                        <label for="buy_post_only">Post only</label>
+                        <input type="checkbox" class="form-control" id="buy_post_only" value="false" onchange="this.value=this.checked" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="buy_submit">Buy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sell -->
+    <div class="modal fade" id="sell_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Sell</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <input type="hidden" id="sell_option" value="">
+              <input type="hidden" id="sell_order" value="">
+              <div class="form-group">
+                <label>Option</label>
+                <div id="sell_description"></div>
+              </div>
+              <div class="form-group">
+                <label for="sell_size">Size</label>
+                <input type="text" class="form-control" id="sell_size" placeholder="Size (eth)" onchange="sellMargin();" />
+              </div>
+              <div class="form-group">
+                <label for="sell_price">Price</label>
+                <input type="text" class="form-control" id="sell_price" placeholder="Price" onchange="sellMargin();" />
+              </div>
+              <div class="form-group">
+                <label for="sell_graph">Payoff diagram</label>
+                <div id="sell_graph" style="width: 100%; overflow: hidden;"></div>
+              </div>
+              <div class="form-group">
+                <label for="sell_margin">Funds required</label>
+                <p><div id="sell_margin"></div></p>
+                <p>This is equivalent to the max loss of the trade. If you have trades that offset this trade, the actual funds required may be less.</p>
+              </div>
+              <div class="panel-group" id="accordionAdvancedSell" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="headingAdvancedSell">
+                    <h4 class="panel-title">
+                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionAdvancedSell" href="#collapseAdvancedSell" aria-expanded="false" aria-controls="collapseAdvancedSell">
+                        Advanced options <i class="fa fa-caret-down"></i>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseAdvancedSell" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAdvancedSell">
+                    <div class="panel-body">
+                      <div class="form-group">
+                        <label for="sell_expires">Good for N blocks</label>
+                        <p>1 block &#8776; 15 seconds</p>
+                        <input type="text" class="form-control" id="sell_expires" placeholder="Blocks" value="10" />
+                      </div>
+                      <div class="form-group">
+                        <label for="sell_post_only">Post only</label>
+                        <input type="checkbox" class="form-control" id="sell_post_only" value="false" onchange="this.value=this.checked" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="sell_submit">Sell</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New expiration -->
+    <div class="modal fade" id="new_expiration_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">New expiration</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="new_expiration_margin">From currency</label>
+                <input type="text" class="form-control" id="new_expiration_fromcur" value="ETH" />
+              </div>
+              <div class="form-group">
+                <label for="new_expiration_margin">To currency</label>
+                <input type="text" class="form-control" id="new_expiration_tocur" value="USD" />
+              </div>
+              <div class="form-group">
+                <label for="new_expiration_date">Expiration</label>
+                <input type="text" class="form-control" id="new_expiration_date" placeholder="yyyy-mm-dd" />
+              </div>
+              <div class="form-group">
+                <label for="new_expiration_call_strikes">Call strikes (maximum of five)</label>
+                <input type="text" class="form-control" id="new_expiration_call_strikes" placeholder="Strikes separated by commas" />
+              </div>
+              <div class="form-group">
+                <label for="new_expiration_put_strikes">Put strikes (maximum of five)</label>
+                <input type="text" class="form-control" id="new_expiration_put_strikes" placeholder="Strikes separated by commas" />
+              </div>
+              <div class="form-group">
+                <label for="new_expiration_margin">In-the-money limit</label>
+                <input type="text" class="form-control" id="new_expiration_margin" placeholder="In-the-money limit" />
+              </div>
+              <div class="form-group">
+                <p>Before filling out this form, we recommend that you reach out to the community to make sure people want to trade your expiration.</p>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="new_expiration_submit">New expiration</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Publish expiration -->
+    <div class="modal fade" id="publish_expiration_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Publish expiration</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="publish_expiration_address">Contract address</label>
+                <input type="text" class="form-control" id="publish_expiration_address" placeholder="0x......" />
+              </div>
+              <div class="form-group">
+                <p>Before filling out this form, we recommend that you reach out to the community to make sure people want to trade your expiration.</p>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="publish_expiration_submit">Publish expiration</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disable expiration -->
+    <div class="modal fade" id="disable_expiration_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Disable expiration</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="disable_expiration_address">Contract address</label>
+                <input type="text" class="form-control" id="disable_expiration_address" placeholder="0x......" />
+              </div>
+              <div class="form-group">
+                <p>Before filling out this form, we recommend that you reach out to the community to make sure people are done trading this expiration.</p>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="disable_expiration_submit">Disable expiration</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expire -->
+    <div class="modal fade" id="expire_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Expire</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <input type="hidden" id="expire_contract_addr" value="" />
+              <div class="form-group">
+                <p><div id="expire_message"></div></p>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="expire_submit">Expire</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="//code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/golden-layout/1.5.1/goldenlayout.min.js" type="text/javascript"></script>
+    <script src="//www.gstatic.com/charts/loader.js" type="text/javascript"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="//code.highcharts.com/stock/highstock.js"></script>
+    <script src="//cdn.jsdelivr.net/alertifyjs/1.7.1/alertify.min.js" type="text/javascript"></script>
+    <script src="ejs_production.js" type="text/javascript"></script>
+    <script src="config.js" type="text/javascript"></script>
+    <script src="bundle.js" type="text/javascript"></script>
+    <script src="layout.js" type="text/javascript"></script>
+    <script src="script.js" type="text/javascript"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-75000235-3', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script>
+      ((window.gitter = {}).chat = {}).options = {
+        room: 'etheropt/etheropt.github.io'
+      };
+    </script>
+    <script src="//sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+  </body>
+
+</html>
