@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
+import HydrogenC
 import getWeb3 from './utils/getWeb3'
 
 import './css/oswald.css'
