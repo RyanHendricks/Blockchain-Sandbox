@@ -1,0 +1,20 @@
+<template name="trade">
+  <tr class="">
+    <td>{{status}}</td>
+    <td>{{tradeID}}</td>
+    <td>{{showCounterpartyName sender}}</td>
+    <td>{{showCounterpartyName seller}}</td>
+    <td>{{showCounterpartyName buyer}}</td>
+    <td>{{seccode}}</td>
+    <td>{{tradedate}}</td>
+    <td>{{deliverydate}}</td>
+    <td>{{quantity}}</td>
+    <td>{{price}}</td>
+    <td>{{deliveryamount}}</td>
+  </tr>
+</template>
+
+<template name="counterparty_optionvalue">
+    <option value="{{Address}}">{{PartyName}}</option>
+</template>
+
