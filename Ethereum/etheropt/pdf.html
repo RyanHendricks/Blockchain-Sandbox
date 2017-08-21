@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico">
+    <link href="//getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.25/paper-full.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <title>Etheropt PDF</title>
+  </head>
+
+  <body>
+
+    <style type="text/css">
+      html,body {
+        margin:0;
+        padding:0;
+        height:100%;
+        width:100%;
+      }
+      canvas {
+        border: 1px solid #ccc;
+        width: 600px;
+        height: 300px;
+      }
+      .fixed-width {
+        width: 600px;
+        margin: 0 auto;
+        padding: 0;
+      }
+      .axis path, .axis line {
+				fill: none;
+				stroke: black;
+				shape-rendering: crispEdges;
+			}
+			.axis text {
+				font-family: sans-serif;
+				font-size: 11px;
+			}
+      div, p {
+        clear: both;
+      }
+    </style>
+
+    <div class="fixed-width">
+      <nav>
+        <div class="navbar-form navbar-right">
+          <button type="button" class="btn btn-default" onclick="clear_pdf();"><i class="fa fa-eraser"></i> Clear</button>
+        </div>
+      </nav>
+
+      <div>
+        <p>Move your mouse slowly from left to right all the way across the canvas to create a probability density function.</p>
+      </div>
+
+      <canvas id="probability_canvas" resize="true"></canvas>
+
+      <div id="axis" style="margin-left: -30px;"></div>
+
+      <div>
+        <p>PDF:</p>
+        <input type="text" id="json" style="width: 100%;" onchange="input_json(); calculate_pdf();" />
+      </div>
+
+      <div id="prices"></div>
+    </div>
+
+    <script type="text/javascript">
+      function getParameterByName(name, url) {
+          if (!url) url = window.location.href;
+          name = name.replace(/[\[\]]/g, "\\$&");
+          var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+              results = regex.exec(url);
+          if (!results) return null;
+          if (!results[2]) return '';
+          return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+      Array.prototype.getUnique = function(){
+         var u = {}, a = [];
+         for(var i = 0, l = this.length; i < l; ++i){
+            if(u.hasOwnProperty(this[i])) {
+               continue;
+            }
+            a.push(this[i]);
+            u[this[i]] = 1;
+         }
+         return a;
+      }
+
+      var strikes = getParameterByName('strikes');
+      var itm_limit = getParameterByName('itm_limit');
+      itm_limit = itm_limit ? Number(itm_limit) : undefined;
+      var range = getParameterByName('range');
+      var range_min = range ? Number(range.split(",")[0]) : 0;
+      var range_max = range ? Number(range.split(",")[1]) : 20;
+
+      var canvas = document.getElementById('probability_canvas');
+      paper.setup(canvas);
+      var maxX;
+      var path;
+      clear_pdf();
+      draw_axis();
+
+      paper.view.onMouseMove = function(event) {
+        var mousePos = event.point;
+        if (maxX<paper.view.bounds.bottomRight.x) {
+          if (mousePos.x>maxX) {
+            if (path.segments.length>1) path.removeSegment(path.segments.length-1);
+            maxX = mousePos.x;
+            path.add(new paper.Point(mousePos.x, mousePos.y));
+            path.add(new paper.Point(mousePos.x, paper.view.bounds.bottomRight.y));
+          }
+          if (mousePos.x>=paper.view.bounds.bottomRight.x-1) {
+            if (path.segments.length>1) path.removeSegment(path.segments.length-1);
+            path.add(new paper.Point(paper.view.bounds.bottomRight.x, paper.view.bounds.bottomRight.y));
+            maxX = paper.view.bounds.bottomRight.x;
+            calculate_pdf();
+            input_json();
+          }
+        }
+      }
+      function calculate_pdf() {
+        var pdf = [];
+        var denominator = 0;
+        for (var i=0; i<path.segments.length; i++){
+          denominator += paper.view.bounds.bottomLeft.y-path.segments[i].point.y;
+        }
+        for (var i=0; i<path.segments.length; i++){
+          var point = path.segments[i].point;
+          pdf.push([(point.x-paper.view.bounds.bottomLeft.x)/(paper.view.bounds.bottomRight.x-paper.view.bounds.bottomLeft.x)*(range_max-range_min)+range_min, (paper.view.bounds.bottomLeft.y-point.y)/denominator])
+        }
+        document.getElementById('json').value = JSON.stringify(pdf);
+        if (strikes && itm_limit) {
+          var calls = strikes.split(",").filter(function(x){return x>0}).map(function(x){return Math.abs(x)});
+          var puts = strikes.split(",").filter(function(x){return x<0}).map(function(x){return Math.abs(x)});
+          calls.sort(function(a, b){return a-b});
+          puts.sort(function(a, b){return a-b});
+          var html = '';
+          html += '<table class="table">';
+          html += '<tr><th>Strike</th><th>Call</th><th>Put</th></tr>';
+          var all_strikes = calls.concat(puts).getUnique();
+          all_strikes.sort(function(a, b){return a-b});
+          for (var i=0; i<all_strikes.length; i++) {
+            var strike = all_strikes[i];
+            var call_price = "";
+            var put_price = "";
+            if (calls.indexOf(strike)>=0) {
+              call_price = pdf.filter(function(p){return p[0]>strike}).map(function(p){return p[1]*Math.min(itm_limit,p[0]-strike)}).reduce(function(a,b){return a+b},0);
+              call_price = call_price.toFixed(3);
+            }
+            if (puts.indexOf(strike)>=0) {
+              put_price = pdf.filter(function(p){return p[0]<strike}).map(function(p){return p[1]*Math.min(itm_limit,strike-p[0])}).reduce(function(a,b){return a+b},0);
+              put_price = put_price.toFixed(3);
+            }
+            html += '<tr><td>'+strike+'</td><td>'+call_price+'</td><td>'+put_price+'</td></tr>';
+          }
+          html += '<tr><td colspan="3">ITM limit: '+itm_limit+'</td></tr>';
+          html += '</table>';
+          document.getElementById('prices').innerHTML = html;
+        }
+      }
+      function clear_pdf() {
+        paper.project.activeLayer.removeChildren();
+        maxX = 0;
+        path = new paper.Path();
+        path.fillColor = 'black';
+        path.strokeColor = 'grey';
+        path.segments = [];
+        path.add(paper.view.bounds.bottomLeft);
+        paper.view.draw();
+        document.getElementById('json').value = '';
+        document.getElementById('prices').innerHTML = '';
+      }
+      function input_json() {
+        var points = JSON.parse(document.getElementById('json').value);
+        paper.project.activeLayer.removeChildren();
+        maxX = paper.view.bounds.bottomRight.x;
+        path = new paper.Path();
+        path.fillColor = 'black';
+        path.strokeColor = 'grey';
+        path.segments = [];
+        path.add(paper.view.bounds.bottomLeft);
+        var max_y = d3.max(points, function(p) { return p[1];} );
+        var min_x = d3.min(points, function(p) { return p[0];} );
+        var max_x = d3.max(points, function(p) { return p[0];} );
+        range_min = min_x;
+        range_max = max_x;
+        draw_axis();
+        for (var i=0; i<points.length; i++) {
+          path.add(new paper.Point((points[i][0]-range_min)/(range_max-range_min)*(paper.view.bounds.bottomRight.x-paper.view.bounds.bottomLeft.x)+paper.view.bounds.bottomLeft.x,(paper.view.bounds.bottomLeft.y-paper.view.bounds.topLeft.y)*(1-points[i][1]/max_y)));
+        }
+        paper.view.draw();
+      }
+      function draw_axis() {
+        //see http://alignedleft.com/tutorials/d3/axes
+  			var w = 660;
+  			var h = 40;
+  			var padding = 30;
+        d3.select("#axis").selectAll("*").remove();
+  			var xScale = d3.scale.linear().domain([range_min, range_max]).range([padding, w - padding]);
+  			var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(5);
+  			var svg = d3.select("#axis").append("svg").attr("width", w).attr("height", h);
+  			svg.append("g").attr("class", "axis").attr("transform", "translate(0," + (h/2) + ")").call(xAxis);
+      }
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<% filteredOptions = options.filter(function(x){return x.contractAddr==contract.contractAddr}) %>
+<% strikes = filteredOptions.map(function(x){return x.strike}).getUnique() %>
+<% if (filteredOptions.length>0) {%>
+  <div id="<%= contract.contractAddr %>_prices">
+    <table class="table table-hover">
+      <tr>
+        <td colspan="2">Prices last updated: <span id="updated">00:00</span></td>
+        <td colspan="3">In-the-money limit: <%= filteredOptions[0].margin %></td>
+        <td colspan="2">Cash <%= bundle.utility.weiToEth(filteredOptions[0].cash) %> eth</td>
+      </tr>
+      <tr>
+        <th colspan="3">Call</th>
+        <th></th>
+        <th colspan="3">Put</th>
+      </tr>
+      <tr>
+        <th>Best bid</th>
+        <th>Best offer</th>
+        <th>My position</th>
+        <th>Strike</th>
+        <th>Best bid</th>
+        <th>Best offer</th>
+        <th>My position</th>
+      </tr>
+      <% strikes.forEach(function(strike){%>
+        <tr>
+          <% option = filteredOptions.filter(function(x){return x.strike==strike && x.kind=='Call'})[0] %>
+          <% if (option) { %>
+            <td>
+              <span style="<%= option.buyOrders && option.buyOrders.length>0 && option.buyOrders[0].order.addr.toLowerCase()==addr.toLowerCase() ? 'background: #9ff' : ''%>"><%= option.buyOrders && option.buyOrders.length>0 ? option.buyOrders[0].price.toFixed(4)+" ("+bundle.utility.weiToEth(option.buyOrders[0].remainingSize)+" eth)" : "N/A" %></span>
+              <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#sell_modal" data-price="<%= option.buyOrders && option.buyOrders.length>0 ? option.buyOrders[0].price.toFixed(4) : "" %>" data-size="<%= option.buyOrders && option.buyOrders.length>0 ? bundle.utility.weiToEth(option.buyOrders[0].remainingSize) : "" %>" data-description="<%= option.expiration+" "+option.fromcur+"/"+option.tocur+" "+option.strike+" "+option.kind+"<br />(in-the-money-limit: "+(option.margin)+")" %>" data-option='<%= JSON.stringify(option) %>' data-order='<%= option.buyOrders && option.buyOrders.length>0 ? JSON.stringify(option.buyOrders[0].order) : '' %>'>Sell</button>
+            </td>
+            <td>
+              <span style="<%= option.sellOrders && option.sellOrders.length>0 && option.sellOrders[0].order.addr.toLowerCase()==addr.toLowerCase() ? 'background: #9ff' : ''%>"><%= option.sellOrders && option.sellOrders.length>0 ? option.sellOrders[0].price.toFixed(4)+" ("+bundle.utility.weiToEth(option.sellOrders[0].remainingSize)+" eth)" : "N/A" %></span>
+              <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#buy_modal" data-price="<%= option.sellOrders && option.sellOrders.length>0 ? option.sellOrders[0].price.toFixed(4) : "" %>" data-size="<%= option.sellOrders && option.sellOrders.length>0 ? bundle.utility.weiToEth(option.sellOrders[0].remainingSize) : "" %>" data-description="<%= option.expiration+" "+option.fromcur+"/"+option.tocur+" "+option.strike+" "+option.kind+"<br />(in-the-money-limit: "+(option.margin)+")" %>" data-option='<%= JSON.stringify(option) %>' data-order='<%= option.sellOrders && option.sellOrders.length>0 ? JSON.stringify(option.sellOrders[0].order) : '' %>'>Buy</button>
+            </td>
+            <td>
+              <%= bundle.utility.weiToEth(option.position) %> eth
+            </td>
+          <% } else { %>
+            <td></td>
+            <td></td>
+            <td></td>
+          <% } %>
+          <td><%= strike %></td>
+          <% option = filteredOptions.filter(function(x){return x.strike==strike && x.kind=='Put'})[0] %>
+          <% if (option) { %>
+            <td>
+              <span style="<%= option.buyOrders && option.buyOrders.length>0 && option.buyOrders[0].order.addr.toLowerCase()==addr.toLowerCase() ? 'background: #9ff' : ''%>"><%= option.buyOrders && option.buyOrders.length>0 ? option.buyOrders[0].price.toFixed(4)+" ("+bundle.utility.weiToEth(option.buyOrders[0].remainingSize)+" eth)" : "N/A" %></span>
+              <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#sell_modal" data-price="<%= option.buyOrders && option.buyOrders.length>0 ? option.buyOrders[0].price.toFixed(4) : "" %>" data-size="<%= option.buyOrders && option.buyOrders.length>0 ? bundle.utility.weiToEth(option.buyOrders[0].remainingSize) : "" %>" data-description="<%= option.expiration+" "+option.fromcur+"/"+option.tocur+" "+option.strike+" "+option.kind+"<br />(in-the-money-limit: "+(option.margin)+")" %>" data-option='<%= JSON.stringify(option) %>' data-order='<%= option.buyOrders && option.buyOrders.length>0 ? JSON.stringify(option.buyOrders[0].order) : '' %>'>Sell</button>
+            </td>
+            <td>
+              <span style="<%= option.sellOrders && option.sellOrders.length>0 && option.sellOrders[0].order.addr.toLowerCase()==addr.toLowerCase() ? 'background: #9ff' : ''%>"><%= option.sellOrders && option.sellOrders.length>0 ? option.sellOrders[0].price.toFixed(4)+" ("+bundle.utility.weiToEth(option.sellOrders[0].remainingSize)+" eth)" : "N/A" %></span>
+              <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#buy_modal" data-price="<%= option.sellOrders && option.sellOrders.length>0 ? option.sellOrders[0].price.toFixed(4) : "" %>" data-size="<%= option.sellOrders && option.sellOrders.length>0 ? bundle.utility.weiToEth(option.sellOrders[0].remainingSize) : "" %>" data-description="<%= option.expiration+" "+option.fromcur+"/"+option.tocur+" "+option.strike+" "+option.kind+"<br />(in-the-money-limit: "+(option.margin)+")" %>" data-option='<%= JSON.stringify(option) %>' data-order='<%= option.sellOrders && option.sellOrders.length>0 ? JSON.stringify(option.sellOrders[0].order) : '' %>'>Buy</button>
+            </td>
+            <td>
+              <%= bundle.utility.weiToEth(option.position) %> eth
+            </td>
+          <% } else { %>
+            <td></td>
+            <td></td>
+            <td></td>
+          <% } %>
+        </tr>
+      <%})%>
+    </table>
+  </div>
+<% } else { %>
+  <table class="table table-hover">
+    <tr>
+      <td></td>
+    </tr>
+  </table>
+<% } %>

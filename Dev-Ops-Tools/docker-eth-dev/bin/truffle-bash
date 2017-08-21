@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+source ${ETH}/bin/utils.sh
+
+SERVICE="truffle"
+
+
+main() {
+    local extra_run_opts="--rm --name truffle-bash"
+
+    local run_opts=$( get-run-opts ${extra_run_opts} )
+
+    run-docker-compose \
+        run ${run_opts} \
+        ${SERVICE} \
+        /bin/bash
+}
+
+main "$@"

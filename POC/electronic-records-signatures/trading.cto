@@ -1,0 +1,42 @@
+/**
+ * Sample business network definition.
+ */
+namespace org.limitorderbook.trading
+
+
+concept OrderSpecs {
+  o DateTime timestamp
+  o String Symbol
+  o Double quantity
+  o Double price
+}
+asset order identified by OrderId {
+  o String OrderId
+  o String Xcode default="RYX"
+}
+
+asset Trade identified by TradeId {
+  o String TradeId
+  --> Buyer buyer
+  --> Seller seller
+  --> Exchange exchange
+  o DateTime TradeTime
+  o OrderSpecs orderspecs
+}
+
+abstract participant Trader identified by UserId {
+ o String UserId
+ o Double account
+ o String name
+}
+
+participant Buyer extends Trader {
+  
+}
+
+participant Seller extends Trader {
+}
+
+participant Exchange identified by Xcode {
+  o String Xcode default="RYX"
+}
