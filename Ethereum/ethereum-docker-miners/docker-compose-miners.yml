@@ -1,0 +1,27 @@
+version: '2'
+services:
+  miner1:
+    build: monitored-geth-client
+    restart: on-failure
+    container_name: miner1
+    hostname: miner1
+    network_mode: "host"
+    entrypoint: /root/start.sh
+    command: '--networkid=42 --port 40404 --shh --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@192.168.0.1:30303" --mine --minerthreads 1 --gasprice 1000'
+    volumes:
+      - ./files/genesis.json:/root/files/genesis.json:ro
+      - ./files/keystore:/root/.ethereum/keystore:rw
+      - /etc/localtime:/etc/localtime:ro
+
+  miner2:
+    build: monitored-geth-client
+    restart: on-failure
+    container_name: miner2
+    hostname: miner2
+    network_mode: "host"
+    entrypoint: /root/start.sh
+    command: '--networkid=42 --port 50505 --shh --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@192.168.0.1:30303" --mine --minerthreads 1 --gasprice 1000'
+    volumes:
+      - ./files/genesis.json:/root/files/genesis.json:ro
+      - ./files/keystore:/root/.ethereum/keystore:rw
+      - /etc/localtime:/etc/localtime:ro

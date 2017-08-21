@@ -1,0 +1,129 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+//Reusable definition concepts
+namespace clinicaltrial.network
+
+// Gender enum
+enum Gender {
+ o MALE
+ o FEMALE
+ o OTHER
+}
+
+concept ContactInfo {
+  o String email  optional
+  o String mobilePhone  optional
+  o String workPhone optional
+}
+
+// Address concept
+concept Address {
+  o String streetnum optional
+  o String streetname optional
+  o String city optional
+  o String state optional
+  o String zipcode optional
+  o String country optional
+  o String county optional
+  o String postalCode optional
+  o String postOfficeBoxNumber optional
+}
+
+// Define abstract person
+abstract participant Person {
+  o String title optional
+  o String firstName  optional
+  o String lastName  optional
+  o Gender gender optional
+  o ContactInfo contactInfo optional
+  o Address address optional
+}
+
+// Study staff participant created with identifying ID
+participant User identified by UserID extends Person {
+o String UserID 
+}
+
+participant Investigator extends User {
+
+}
+
+participant Sponsor extends User {
+
+
+}
+
+enum Status{
+  o Created
+  o Modified
+  o Reviewed
+  o Signed
+}
+enum Type {
+  o Regulatory 
+  o Safety
+  o IP
+  o IRB
+}
+
+concept MetaData {
+  o String description
+}
+
+asset Document identified by DocID {
+  o String DocID
+  o Status status
+  o Type type 
+  o MetaData metadata optional
+  o DocumentLog[] logEntries 
+  o SignatureLog[] logSignatures
+}
+
+concept DocumentLog {
+  o DateTime timestamp
+}
+
+concept SignatureLog {
+  o DateTime timestamp
+}
+
+
+abstract transaction DocumentChange {
+    --> Document document
+}
+
+/**
+ * An temperature reading for a shipment. E.g. received from a
+ * device within a temperature controlled shipping container
+ */
+
+
+/**
+ * A notification that a shipment has been received by the
+ * importer and that funds should be transferred from the importer
+ * to the grower to pay for the shipment.
+ */
+transaction ChangeDocStatus identified by ChangeID extends DocumentChange {
+ // --> DocumentLog logEntries
+ o String ChangeID
+ o Status status
+}
+
+transaction DocumentSign identified by ChangeID extends DocumentChange {
+ // --> SignatureLog logSignatures
+ o String ChangeID
+ o 
+ o Status status
+}
