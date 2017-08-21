@@ -1,0 +1,42 @@
+<% filteredOptions = options.filter(function(x){return x.contractAddr==contract.contractAddr}) %>
+<nav>
+  <div class="navbar-form navbar-left">
+    <div class="btn-group">
+      <button type="button" class="btn btn-default btn-xs" onclick="window.open('<%= contract.contractLink %>');"><i class="fa fa-file-text"></i>
+        <% if (filteredOptions.length>0) { %>
+          <%= filteredOptions[0].expiration %> <%= filteredOptions[0].fromcur+"/"+filteredOptions[0].tocur %> (<%= contract.contractAddr.slice(0,8) %>...)
+        <% } else { %>
+          Expired (<%= contract.contractAddr.slice(0,8) %>...)
+        <% } %>
+      </button>
+      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu">
+        <% optionExpirations.forEach(function(optionExpiration){ %>
+          <li>
+            <a href="#" onclick="bundle.Main.selectContract('<%= optionExpiration.contractAddr %>')">
+              <% if (optionExpiration.expiration != 'Expired') { %>
+                <%= optionExpiration.expiration %> <%= optionExpiration.fromcur+"/"+optionExpiration.tocur %> (<%= optionExpiration.contractAddr.slice(0,8) %>...)
+              <% } else { %>
+                Expired (<%= optionExpiration.contractAddr.slice(0,8) %>...)
+              <% } %>
+            </a>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+  <div class="navbar-form navbar-left">
+    <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#fund_modal" data-contract="<%= contract.contractAddr%>">Funds <span class="badge"><%= bundle.utility.weiToEth(contract.funds) %> eth</span></button>
+  </div>
+  <div class="navbar-form navbar-left">
+    <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#withdraw_modal" data-contract="<%= contract.contractAddr%>">Available <span class="badge"><%= bundle.utility.weiToEth(contract.fundsAvailable) %> eth</span></button>
+  </div>
+  <% if (filteredOptions.length>0) { %>
+    <div class="navbar-form navbar-left">
+      <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#expire_modal" data-contract="<%= contract.contractAddr%>"><i class="fa fa-calendar"></i> Expire</button>
+    </div>
+  <% } %>
+</nav>

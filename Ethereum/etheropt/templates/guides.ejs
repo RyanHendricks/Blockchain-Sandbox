@@ -1,0 +1,64 @@
+<div>
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#connect-ethereum" aria-controls="connect-ethereum" role="tab" data-toggle="tab">Connect to Ethereum</a></li>
+    <li role="presentation"><a href="#deposit-withdraw" aria-controls="deposit-withdraw" role="tab" data-toggle="tab">Deposit and withdraw</a></li>
+    <li role="presentation"><a href="#understand-options" aria-controls="understand-options" role="tab" data-toggle="tab">Understand options</a></li>
+    <li role="presentation"><a href="#trade-options" aria-controls="trade-options" role="tab" data-toggle="tab">Trade options</a></li>
+    <li role="presentation"><a href="#market-make" aria-controls="market-make" role="tab" data-toggle="tab">Market make</a></li>
+  </ul>
+  <div class="tab-content list-spacing padding">
+    <div role="tabpanel" class="tab-pane active" id="connect-ethereum">
+      <h3>Connect to Ethereum</h3>
+      <p>There are three ways you can connect to the Ethereum network.
+      <ol>
+        <li>Connect to the Ethereum network through <a href="https://metamask.io">MetaMask</a>. MetaMask is a Chrome plugin that lets you manage your Ethereum accounts and sign transactions on a case by case basis. If you are using MetaMask, your MetaMask account will automatically appear in the account dropdown.</li>
+        <li>Connect to Ethereum via the Mist browser. The only downside to doing this is that you will have to unlock your account manually in order to broadcast resting orders (other transactions will work). Mist will eventually support the eth.sign() function that is needed to individually approve resting orders, but for now you will need to unlock your account manually by running <code>geth attach</code> and then <code>personal.unlockAccount("0xYOUR_ETHEREUM_ACCOUNT")</code> from the command line.</li>
+        <li>Connect to Ethereum through the Etherscan API. This is the default option if you don't have MetaMask or Mist. You will need to create a new account by clicking "Create account" under the address dropdown. You should export the private key and write it down by clicking "Export private key" under the address dropdown. If you prefer, you can also use <a href="http://www.myetherwallet.com/" target="_blank">MyEtherWallet</a> to create a new Ethereum account, then use "Import account" to add your new address and its private key.</li>
+      </ol>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="deposit-withdraw">
+      <h3>Deposit and withdraw</h3>
+      <ol>
+        <li>By now you should have an address in the account dropdown in the upper right. You will need some Ether in this account. If you don't have Ether, click the account dropdown and choose "Deposit with ShapeShift.io." This will let you convert Bitcoin or any other cryptocurrency into Ether and have it deposited into your account.</li>
+        <li>Each expiration has its own smart contract, so you will need to pick an expiration and send funds to the expiration's smart contract. Click one of the expirations in the tabs beneath this guide.</li>
+        <li>Now that you have selected an expiration, click on the "Funds" button. This will let you deposit Ether from your Ethereum account into the expiration's smart contract. Don't forget that every Ethereum transaction requires a small transaction fee known as gas, so you will need a little bit extra in your account in addition to the funds you are sending. For funding and withdrawing, this number will be less than 0.01 ether. You should see the transaction pop up in the transaction log after about 15 seconds (the average time to confirm an Ethereum transaction).</li>
+        <li>When you want to withdraw funds, click on the "Available" button. This will let you withdraw Ether from the expiration's smart contract into your Ethereum account. You can only withdraw from your available funds (the funds that are not being held to finance trades).</li>
+        <li>Once you have withdrawn funds from the smart contract into your Ethereum account, if you need to move the funds to a different Ethereum account, you may find the <a href="https://www.myetherwallet.com/#send-transaction" target="_blank">MyEtherWallet send transaction tool</a> quite useful if you aren't used to sending Ethereum transactions.</li>
+      </ol>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="understand-options">
+      <h3>Understand options</h3>
+      <p>This guide will generally assume you know nothing about options, but it's still a good idea to search for your own reading material on options outside of this guide. This guide will talk about features of options that are specific to EtherOpt without necessarily introducing them as such.</p>
+      <p>Every option has a strike and an expiration. There are two kinds of options: calls and puts. A call option pays off if the underlying (ETH/USD) expires above the strike, while a put option pays off if the underlying expires below the strike. Every option has a price (also known as a premium), which is paid by the buyer and collected by the seller. If an option expires in-the-money (above the strike for a call, below the strike for a put), the seller pays the difference between the strike and the underlying to the buyer. Each expiration has an in-the-money limit that sets a cap on the amount by which an option can be in-the-money.</p>
+      <h4>Payoff diagrams</h4>
+      <p>For example, suppose you buy 100 eth of the 12.5 call for 1.5, and the in-the-money limit is 5. Your max loss is 100 eth * (1.5) = 150 eth when ETH/USD expires at or below 12.5. Your max gain is 100 eth * (5 - 1.5) = 350 eth when ETH/USD expires at or above 17.5 (since the in-the-money limit is 5). The payoff diagram looks like this:</p>
+      <p><div id="buy_call"></div></p>
+      <p>The payoff diagram for the seller of this call looks like this:</p>
+      <p><div id="sell_call"></div></p>
+      <p>Now let's look at a put. Suppose you buy 10 eth of the 8.5 put for 0.5, and the in-the-money limit is 5. Your max loss is 10 eth * (0.5) = 5 eth when ETH/USD expires at or above 8.5. Your max gain is 10 eth * (5 - 0.5) = 45 eth when ETH/USD expires at or below 3.5 (since the in-the-money limit is 5). The payoff diagram looks like this:</p>
+      <p><div id="buy_put"></div></p>
+      <p>The payoff diagram for the seller of this put looks like this:</p>
+      <p><div id="sell_put"></div></p>
+      <h4>Funding trades</h4>
+      <p>In order to trade an option, you need to have enough funds in your account to cover your maximum loss. The smart contract considers your entire option position when calculating the maximum loss. For example, if you sell 100 eth of the 11 call for 1.25 and buy 100 eth of the 12 call for 0.75, your maximum loss is 50 eth, which occurs when ETH/USD expires between 12 and 16. Your available balance is equal to your total funds minus your maximum possible loss. You can never withdraw more than your available balance.</p>
+      <h4>Cash and position</h4>
+      <p>Whenever you trade an option, the smart contract updates your position and your cash. Your cash is an aggregate of all the premium you have paid or received for the entire expiration. For example, if you buy 10 eth of the 12 call for 0.5, your position on the 12 call increases by 10 eth, and your cash decreases by 10 eth * 0.5 = 5 eth. If you sell the same option, your position decreases by 10 eth, and your cash usage increases by 5 eth.</p>
+      <h4>Expiration</h4>
+      <p>When expiration is run on the smart contract, your funds will automatically change by the cash in your account plus any in-the-money payoffs. For example, if you buy 10 eth of the 12 call for 0.5, your position is 10 eth and your cash usage is -5 eth. If ETH/USD expires at 14, your funds will change by -5 eth + 10 eth * (2) = 15 eth. At expiration time, your funds will automatically be sent to your Ethereum address and your balance will be zeroed out.</p>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="trade-options">
+      <h3>Trade options</h3>
+      <ol>
+        <li>Assuming you have successfully added funds to one of the smart contracts (see the other guides), you are ready to start trading options. Before you jump in, you should read the "Understand options" guide to make sure you understand how options work on EtherOpt.</li>
+        <li>You should now be looking at a table of call and put options each with its own bid price and offer price. For example, "2.0950 (1.000 eth)" means the price is 2.0950 and the size of the order is 1.000 eth. If you don't see any prices, it means nobody is currently market making. This should rarely happen, but if it does, reach out on the Gitter chat. The markets for each expiration are provided in real-time by up to six people who claim the responsibility by sending a special transaction to the smart contract. They are also responsible for maintaining the order book of resting orders from regular EtherOpt users.</li>
+        <li>Pick an option you want to trade and click "buy" or "sell." A dialog will pop up. The price and size will be filled in automatically based on the market you clicked, but you can modify them as needed. A payoff diagram similar to the ones in the "Understand options" guide is provided for your convenience. The funds required are also shown. In order to do a trade, you need to have enough funds in your account to cover the maximum loss. Under "Advanced options," you can specify a "Good for N blocks" number. The default is 10 blocks, which is approximately 2 minutes of Ethereum time. This means that if your order cannot cross immediately, it will rest on the order book for 10 blocks.</li>
+        <li>If your trade can be executed immediately because you matched the price displayed, a transaction will be sent to the blockchain and you should see an order confirmation in the transaction log in about 15 seconds. You do not have to match the size of the order shown. If you choose a smaller size, the smart contract will fill your order and the remaining size will be left for someone else to take. If you choose a larger size, then the size that can be matched immediately will be sent to the blockchain and the remaining size will be sent to rest on the order book. If your own order is at the top level, it will be highlighted on the order book. Note that the best price with the biggest size is always displayed at the top of the order book. Click the "My orders" tab to keep track of your working orders.</li>
+      </ol>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="market-make">
+      <h3>Market make</h3>
+      <p>If you are interested in automatically market making using Black Scholes, please get in touch through the Gitter chat.</p>
+    </div>
+    <p>Need help? Join the <a href="https://gitter.im/etheropt/etheropt.github.io" target="_blank"><img src="https://badges.gitter.im/etheropt/etheropt.github.io.svg" alt="Chat on Gitter" /></a></p>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+namespace clinicaltrial.network
+import clinicaltrial.network.base.*
+
+//Building network participants
+abstract participant User identified by userID {
+  o String userID
+  o String Affiliation
+  o PersonalInfo personalinfo
+  o ContactInfo contactinfo
+  o MetaData metadata
+}
+
+enum UserRole {
+  o Regulator
+  o Sponsor
+  o Manager
+  o Investigator
+  o ResearchNOS
+  o Coordinator
+}
+enum UserContext {
+  o TrialManagement
+  o DataManagement
+  o Laboratory
+  o Safety
+  o TrialOversight
+  o Site
+}
+enum UserPermissions {
+  o Admin
+  o PI
+  o Auditor
+  o ReadOnly
+  o Limited
+}
+
+// Study staff participant created with identifying ID
+participant StudyPersonnel extends User {
+  o UserContext context
+  o UserRole role
+  o UserPermissions access default="Limited"
+}
+
+participant Investigator extends User {
+  o UserContext context default="Site"
+  o UserRole role default="Investigator"
+  o UserPermissions access default="PI"
+}
+
+participant CTM extends User{
+  o UserContext context default="TrialManagement"
+  o UserRole role default="Manager"
+  o UserPermissions access default="Admin"
+}
+

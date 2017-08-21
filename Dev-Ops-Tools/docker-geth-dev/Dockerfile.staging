@@ -1,0 +1,15 @@
+FROM ethereum/client-go
+
+# script that invokes with all those
+# command line options
+ARG TESTNET
+ENV TESTNET $TESTNET
+COPY rungeth_staging.docker /usr/bin/rungeth
+
+# these two files and directory of geth state belong together and must be
+# kept in sync if changes  are ever made
+# Note we are taking advantage of Docker's copy-on-mount feature
+COPY geth.password /geth/geth.password
+
+ENTRYPOINT []
+ENTRYPOINT ["/usr/bin/rungeth"]
