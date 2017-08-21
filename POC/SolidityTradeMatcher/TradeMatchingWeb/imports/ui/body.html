@@ -1,0 +1,64 @@
+<body>
+  <div class="container">
+    <header>
+      <h1>Trade Matching List ({{incompleteCount}})</h1>
+      <label class="tradedate-selector">Trade Date
+        <input name="tradedate_filter" type='text' class='datetimepicker' />
+      </label>
+      <label class="my-trade-only">
+        <input type="checkbox" />
+        My Trades
+      </label>
+      <label class="my-unmatch-only">
+        <input type="checkbox" />
+        My Unmatches
+      </label>
+
+      <form class="new-trade">
+        <label for="input_seller">Seller: </label><select name="seller" id="input_seller" >
+        {{#each counterparties}}
+         {{> counterparty_optionvalue}}
+        {{/each}}
+        </select>
+        <label for="input_buyer">Buyer: </label><select name="buyer" id="input_buyer">
+        {{#each counterparties}}
+          {{> counterparty_optionvalue}}
+        {{/each}}
+        </select>
+        <br />
+        <label for="input_seccode">Seccode: </label><input type="text" name="seccode" id="input_seccode" placeholder="seccode" />
+        <br />
+        <label for="input_tradedate">Tradedate: </label><input type="number" name="tradedate"  id="input_tradedate" placeholder="tradedate" />
+        <br />
+          <label for="input_deliverydate">Deliverydate: </label><input type="number" name="deliverydate"  id="input_deliverydate" placeholder="deliverydate" />
+        <br />
+            <label for="input_quantity">Quantity: </label><input type="number" name="quantity" id="input_quantity" placeholder="quantity" />
+        <br />
+              <label for="input_price">Price: </label><input type="number" name="price" id="input_price" placeholder="price" />
+        <br />
+                <label for="input_deliveryamount">DeliveryAmount: </label><input type="number" name="deliveryamount" id="input_deliveryamount" placeholder="deliveryamount" />
+        <br />
+        <input type="submit" value="Submit">
+      </form>
+    </header>
+
+    <table>
+      <thead><tr>    <td>status</td>
+        <td>tradeID</td>
+        <td>sender</td>
+        <td>seller</td>
+        <td>buyer</td>
+        <td>seccode</td>
+        <td>tradedate</td>
+        <td>deliverydate</td>
+        <td>quantity</td>
+        <td>price</td>
+        <td>deliveryamount</td></tr></thead>
+      <tbody>
+      {{#each trades}}
+        {{> trade}}
+      {{/each}}
+      </tbody>
+    </table>
+  </div>
+</body>
