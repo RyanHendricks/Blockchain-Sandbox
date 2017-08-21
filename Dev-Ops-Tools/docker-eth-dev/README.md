@@ -1,9 +1,12 @@
-# docker-eth-dev
+## docker-eth-dev
+### Ethereum Network Building Blocks
+---
+*Multi-container development environment for building dapps on test chains*
 
-[![Join the chat at https://gitter.im/gnidan/docker-eth-dev](https://badges.gitter.im/gnidan/docker-eth-dev.svg)](https://gitter.im/gnidan/docker-eth-dev?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+This project is a modified version of the original [docker-eth-dev repo **found here.**]("https://github.com/gnidan/docker-eth-dev")
 
-Multi-container development environment for building dapps on test chains
-
+---
+> Original Readme
 ## Background / Goals
 
 I'm trying to find a suitable solution to the problem of having to run switch
