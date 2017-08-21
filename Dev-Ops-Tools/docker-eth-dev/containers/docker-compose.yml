@@ -7,7 +7,7 @@ services:
       - ethereum-dev
 
   parity-testnet:
-    image: ethcore/parity:v1.5.6 # TODO: change back to beta-release or stable-release when kovan changes are there
+    image: parity/parity:stable # TODO: change back to beta-release or stable-release when kovan changes are there
     volumes:
       - parity-testnet-data:/var/parity
     tty: true
