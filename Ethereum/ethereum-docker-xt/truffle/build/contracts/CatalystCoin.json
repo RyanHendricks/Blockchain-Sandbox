@@ -1,0 +1,14 @@
+{
+  "contract_name": "CatalystCoin",
+  "abi": [
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    }
+  ],
+  "unlinked_binary": "0x60606040523415600b57fe5b5b5b5b603380601b6000396000f30060606040525bfe00a165627a7a7230582099efddac1b1504df83ff152207ec7ed7b421d3b86da90db949ce9c64dd9b4ae60029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1500260739446
+}
