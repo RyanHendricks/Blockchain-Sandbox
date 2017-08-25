@@ -1,0 +1,17 @@
+version: '2'
+services:
+  geth:
+    build: monitored-geth-client
+    command: --nodekeyhex=091bd6067cb4612df85d9c1ff85cc47f259ced4d4cd99816b14f35650f59c322 --shh --rpcapi "db,personal,eth,net,web3,shh" --rpccorsdomain='*' --networkid=1234 --rpc --rpcaddr="0.0.0.0" init=/root/files/genesis.json --mine
+    volumes:
+      - ./files/password:/root/files/password:ro
+      - ./files/genesis.json:/root/files/genesis.json:ro
+      - ./files/keystore:/root/.ethereum/keystore:rw
+    ports:
+      - "30303:30303"
+      - "30303:30303/udp"
+      - "8545:8545"
+    entrypoint: /root/start.sh
+
+
+    ethereumwallet --rpc $HOME/.rinkeby/geth.ipc --node-networkid=4 --node-datadir=$HOME/.rinkeby --node-ethstats='yournode:Respect my authoritah!@stats.rinkeby.io' --node-bootnodes=enode://a24ac7c5484ef4ed0c5eb2d36620ba4e4aa13b8c84684e1b4aab0cebea2ae45cb4d375b77eab56516d34bfbd3c1a833fc51296ff084b770b94fb9028c4d25ccf@52.169.42.101:30303

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vote for your favorite restaurant around Nation </title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://bootswatch.com/yeti/bootstrap.min.css' rel='stylesheet' type='text/css'>
+
+  <style>
+    .margin-top-3 {
+      margin-top: 3em;
+    }
+
+    .btn {
+        padding: 0px 6px;
+    }
+    .progress{
+        margin-bottom: 8px;
+    	}
+    .progress-bar{
+        line-height: 16px;
+    }
+
+    .glyphicon-refresh-animate {
+        -animation: spin .7s infinite linear;
+        -webkit-animation: spin2 .7s infinite linear;
+    	margin-top: 4px;
+    }
+
+    @-webkit-keyframes spin2 {
+        from { -webkit-transform: rotate(0deg);}
+        to { -webkit-transform: rotate(360deg);}
+    }
+    .table-responsive.mini-padding table tbody td{
+    	padding:4px;
+    }
+
+    .address-tag, .hash-tag-frontpage, .shorturl-tag1 {
+        display: inline-block;
+        vertical-align: bottom;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .address-tag {
+        width: 132px;
+    }
+    .marketing .col-lg-4 {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .candidates td {
+        padding: 17px !important;
+    }
+  </style>
+</head>
+<body>
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="../" class="navbar-brand">(C) Object'ive - Démonstrateur Blockchain</a>
+    
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-main">
+     
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://ethereum.org/  " target="_blank">Built With Solidity & web3</a></li>
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+	  
+<div class="page-header">
+   <h2>
+   La Ravigote? Le Bonal ? Vote for your favorite restaurant !</h2>
+  <p class="text-muted">Powered by Ethereum Blockchain and Fabibi.</p>
+</div>
+
+
+
+<div class="row marketing well">
+  <div class="col-lg-4">
+    <span class="img-circle glyphicon glyphicon-globe" aria-hidden="true" style="font-size: 90px;"></span>
+    <h2>Decentralized</h2>
+    <p>This Voting app is a completely decentralized platform, without any central points of failure. The vote calls are executed directly between the voter and the smartc contract.</p>
+  </div>
+  <div class="col-lg-4">
+    <span class="img-circle glyphicon glyphicon-sunglasses" aria-hidden="true" style="font-size: 90px;"></span>
+    <h2>Trustless</h2>
+    <p>This app achieves an unprecedented level of trustlessness. Voter can vote anonymously; No trust is needed in anyone, us included, it's all enforced by algorithms.</p>
+  </div>
+  <div class="col-lg-4">
+    <span class="img-circle glyphicon glyphicon-lock" aria-hidden="true" style="font-size: 90px;"></span>
+    <h2>Secure</h2>
+    <p>This voting app bases all its processing on top of the Ethereum blockchain. This means that all your transactions are validated, executed and enforced by a <a href="http://ethernodes.org/network/1" target="_blank"><em>global network</em></a> of machines. Everyone plays by the same, open and public ledger.</p>
+  </div>
+</div>
+
+
+<div class="col-sm-12 margin-top-2 well">
+
+  
+
+  <div class="form-horizontal">
+    <fieldset>
+      <legend>New Wallet</legend>
+      <div class="input-group">
+        <input type="text" id="userEntropy" class="form-control" placeholder="Type random text to generate entropy" ></input> 
+        <a class="input-group-addon btn btn-primary" onclick="newWallet()">Create New Wallet</a>
+      </div>
+      <br>
+      <legend>Restore Wallet From Seed</legend>
+      <div class="input-group">
+        <input type="text" id="seed" value="" class="form-control"></input> 
+        <a class="input-group-addon btn btn-primary" onclick="setSeed()">Restore wallet from Seed</a>
+      </div>
+      <br>
+      
+      <legend>Generated Addresses</legend>
+      
+      <div class="input-group" style="display:none;">
+
+        <input type="text" id="numAddr" value="3" class="form-control" size="5" style="display:none;width:50px"></input> <span> more address(es) </span>
+        <a lass="input-group-addon btn btn-primary" onclick="newAddresses()"  style="display:none;">Show</a>
+      </div>
+      
+       <div id="addr"></div>
+    
+    </fieldset>
+  </div>
+</div>
+
+<div class="col-sm-12 margin-top-2 alert alert-dismissible alert-info">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <span><i title="Network" class="glyphicon glyphicon-globe"></i> <strong> Ethereum Network</strong> : <a class="alert-link" target="_blank" href="https://ropsten.etherscan.io">Ropsten Test Net</a></span>
+  <br>
+  <span><i title="Contract" class="glyphicon glyphicon-file"></i><strong> Voting dApp Smart contract address </strong> : <span id="contract-address"></span></span>
+  <br>
+  <span><i title="Address" class="glyphicon glyphicon-info-sign"></i><strong> Your current address </strong> : <span id="current-address"></span></span>
+</div>
+
+ <div id="msg" class="col-sm-12 margin-top-2 alert alert-dismissible alert-success"></div>
+ 
+  <div class="col-sm-7 margin-top-2">
+    <h3>Candidates</h3>
+    <div class="table-responsive">
+      <table class="candidates table table-bordered table-striped table-hover ">
+        <thead>
+          <tr>
+            <th>Candidate</th>
+            <th>Votes</th>
+          </tr>
+        </thead>
+        <tbody id="candidate-rows">
+        </tbody>
+      </table>
+    </div>
+	<!--
+    <div class="well bs-component">
+      <form class="form-horizontal">
+        <fieldset>
+          <legend>Vote for restaurant</legend>
+          <div id="msg" class="alert alert-dismissible alert-success"></div>
+         
+          <div class="form-group">
+            <label for="candidate" class="col-lg-2 control-label">Restaurant</label>
+            <div class="col-lg-10">
+              <input type="text" id="candidate" placeholder="Enter the candidate name" class="form-control"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="vote-tokens" class="col-lg-2 control-label">Tokens</label>
+            <div class="col-lg-10">
+             <select class="form-control" id="vote-tokens" placeholder="Total no. of tokens to vote">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+          </div>
+         
+          <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+             <a onclick="voteForCandidate()" class="btn btn-primary">Vote</a>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+	-->
+  </div>
+
+  <div class="col-sm-offset-1 col-sm-4 margin-top-2">
+    <div class="row margin-top-1">
+      <h3>My infos</h3>
+      <div class="table-responsive mini-padding">
+        <table class="table table-bordered">
+          <tr>
+            <td>Tokens bought</td>
+            <td id="my-tokens-bought"></td>
+          </tr>
+          <tr>
+            <td>Tokens remaining</td>
+            <td id="my-tokens-remaining"></td>
+          </tr>
+         
+        </table>
+      </div>
+    </div>
+    <div class="row margin-top-1">
+      <h3>Token Stats</h3>
+      <div class="table-responsive mini-padding">
+        <table class="table table-bordered">
+          <tr>
+            <td>Tokens For Sale</td>
+            <td id="tokens-total"></td>
+          </tr>
+          <tr>
+            <td>Tokens Sold</td>
+            <td id="tokens-sold"></td>
+          </tr>
+          <tr>
+            <td>Price Per Token</td>
+            <td id="token-cost"></td>
+          </tr>
+          <tr>
+            <td>Balance in the contract</td>
+            <td id="contract-balance"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="row margin-top-2">
+      <div id="buy-msg" class="alert alert-dismissible alert-success"></div>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Purchase Tokens</h3>
+        </div>
+        <div class="panel-body">
+         <div class="input-group">
+            <input id="buy" type="text" class="form-control" placeholder="Number of tokens to buy" />
+            <a onclick="buyTokens()" class="input-group-addon btn btn-primary">Buy</a>
+         </div>
+        </div>
+      </div>
+    </div>
+    <div class="row margin-top-2">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Lookup Voter Info</h3>
+        </div>
+        <div class="panel-body">
+         <div class="input-group">
+            <input id="voter-info" type="text" class="form-control" placeholder="Enter the voter address" />
+            <a onclick="lookupVoterInfo()" class="input-group-addon btn btn-primary"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Lookup</a>
+         </div>
+
+        </div>
+      </div>
+      <div id="tokens-bought" class="alert alert-dismissible alert-info"></div>
+      <p id="votes-cast"></p>
+    </div>
+  </div>
+  <div class="col-sm-12 margin-top-2">
+	  <h3>Transactions History</h3>
+	  <table id="transactions" class="table"><thead>
+      <tr>
+  		<th>TxHash</th>
+  		<th>Block</th>
+  		<th><span title="UTC time">Age</span></th>
+  		<th>From</th>
+  		<th></th>
+  		<th>To</th>
+  		<th>Value</th>
+  		<th><span rel="tooltip" data-placement="bottom" title="" data-original-title="(GasPrice * GasUsed By Txn) in Ether"><font color="silver" size="1">[TxFee]</font></span>
+  		</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+	
+  </div>
+  </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="app.js"></script>
+</html>

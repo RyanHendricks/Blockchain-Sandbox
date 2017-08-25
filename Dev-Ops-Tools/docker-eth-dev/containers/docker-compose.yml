@@ -1,0 +1,113 @@
+version: '2'
+services:
+
+  testrpc:
+    build: testrpc
+    networks:
+      - ethereum-dev
+
+  parity-testnet:
+    image: parity/parity:stable # TODO: change back to beta-release or stable-release when kovan changes are there
+    volumes:
+      - parity-testnet-data:/var/parity
+    tty: true
+    networks:
+      - ethereum-testnet
+    entrypoint: >
+      /parity/parity
+        --testnet --warp
+        --ui-interface 0.0.0.0 --jsonrpc-interface 0.0.0.0 --dapps-interface 0.0.0.0
+        --jsonrpc-hosts all --dapps-hosts all
+        --base-path /var/parity
+
+  oraclize-bridge:
+    tty: true
+    build: oraclize-bridge
+    networks:
+      - ethereum-dev
+    links:
+      - testrpc
+    volumes:
+      - oraclize-instance:/var/oraclize-bridge/config/instance
+
+  oraclize-bridge-announce:
+    tty: true
+    build: oraclize-bridge-announce
+    networks:
+      - ethereum-dev
+    links:
+      - oraclize-bridge
+    volumes:
+      - oraclize-instance:/var/oraclize-instance
+      - "${ETH}/containers/oraclize-bridge-announce/bin/server.js:/var/announce/server.js"
+    ports:
+      - "80"
+
+  solc:
+    image: ethereum/solc:stable
+    tty: true
+    volumes:
+      - "${ETH}/dapps:/var/dapps"
+
+  truffle:
+    stdin_open: true
+    tty: true
+    build: truffle
+    ports:
+      - "9999"
+    networks:
+      - ethereum-dev
+      - ethereum-testnet
+    volumes:
+      - "${ETH}/dapps:/var/dapps"
+    links:
+      - parity-testnet
+      - testrpc
+      - oraclize-bridge-announce
+
+  ipfs:
+    image: jbenet/go-ipfs
+    tty: true
+    volumes:
+      - ipfs-export:/export
+      - ipfs-data:/data/ipfs
+    networks:
+      - ipfs
+
+  nginx:
+    restart: always
+    tty: true
+    image: nginx
+    volumes:
+      - "${ETH}/containers/nginx/nginx.conf:/etc/nginx/nginx.conf"
+    networks:
+      - ethereum-testnet
+      - ethereum-dev
+      - ipfs
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "8545:8545"
+    links:
+      - parity-testnet
+      - testrpc
+      - ipfs
+    entrypoint: >
+      /bin/bash -c "nginx -g 'daemon off;'"
+
+
+volumes:
+  ipfs-export:
+  ipfs-data:
+    external: true
+  parity-testnet-data:
+    external: true
+  oraclize-instance:
+
+networks:
+  ethereum-dev:
+    driver: bridge
+  ethereum-testnet:
+    driver: bridge
+  ipfs:
+    driver: bridge

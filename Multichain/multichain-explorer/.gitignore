@@ -1,0 +1,7 @@
+*.pyc
+*abe.sqlite*
+tmpd
+MANIFEST
+build
+dist
+.idea
